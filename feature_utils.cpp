@@ -1,3 +1,11 @@
+//Name: Natasha Nicholas
+//Date: Feb. 11, 2026
+//File: feature_utils.cpp
+//
+//Image feature extraction utilities.
+// Includes baseline patch features, color histograms,
+// texture histograms, and CSV read/write helpers.
+
 #include "feature_utils.h"
 #include <filesystem>
 #include <fstream>
@@ -7,6 +15,7 @@
 
 namespace fs = std::filesystem;
 
+//Extract a simple baseline feature: pixel values from the center 7x7 patch.
 static vector<int> baseline7x7(const Mat &img) {
     int cx = img.cols / 2;
     int cy = img.rows / 2;
@@ -24,6 +33,7 @@ static vector<int> baseline7x7(const Mat &img) {
     return feat;
 }
 
+// Compute normalized 2D rg histogram.
 static vector<double> rgHistogram(const Mat &img, int bins = 16) {
     vector<double> hist(bins * bins, 0.0);
 
@@ -49,6 +59,7 @@ static vector<double> rgHistogram(const Mat &img, int bins = 16) {
     return hist;
 }
 
+// Compute normalized RGB histogram with 3D bins (R,G,B).
 static vector<double> rgbHistogram(const Mat &img, int bins = 8) {
     vector<double> hist(bins * bins * bins, 0.0);
 
@@ -74,6 +85,7 @@ static vector<double> rgbHistogram(const Mat &img, int bins = 8) {
     return hist;
 }
 
+// Compute histogram of Sobel gradient magnitudes.
 static vector<double> sobelMagnitudeHist(const Mat &img, int bins = 16) {
     Mat gray;
     cvtColor(img, gray, COLOR_BGR2GRAY);
@@ -107,6 +119,7 @@ static vector<double> sobelMagnitudeHist(const Mat &img, int bins = 16) {
     return hist;
 }
 
+// Extract RGB histograms for top and bottom halves of the image.
 static vector<double> multiHistTopBottom(const Mat &img) {
     int mid = img.rows / 2;
     Mat top = img(Range(0, mid), Range::all());
@@ -121,6 +134,7 @@ static vector<double> multiHistTopBottom(const Mat &img) {
     return feat;
 }
 
+// Combine color histogram + texture histogram.
 static vector<double> colorTextureFeat(const Mat &img) {
     vector<double> c = rgbHistogram(img, 8);
     vector<double> t = sobelMagnitudeHist(img, 16);
@@ -131,10 +145,12 @@ static vector<double> colorTextureFeat(const Mat &img) {
     return feat;
 }
 
+// Custom feature wrapper
 static vector<double> customFeature(const Mat &img) {
     return colorTextureFeat(img);
 }
 
+//Compute features based on requested type.
 ImageFeature computeFeatures(const Mat &img, FeatureType type, const string &name) {
     ImageFeature f;
     f.name = name;
@@ -158,6 +174,7 @@ ImageFeature computeFeatures(const Mat &img, FeatureType type, const string &nam
     return f;
 }
 
+// Extract features for all images in a directory.
 vector<ImageFeature> extractDirFeatures(const string &dir, FeatureType type) {
     vector<ImageFeature> db;
 
@@ -175,6 +192,7 @@ vector<ImageFeature> extractDirFeatures(const string &dir, FeatureType type) {
     return db;
 }
 
+// Write feature vectors to CSV.
 void writeFeatureCSV(const string &filename, const vector<ImageFeature> &features) {
     ofstream file(filename);
     for (auto &f : features) {
@@ -189,6 +207,7 @@ void writeFeatureCSV(const string &filename, const vector<ImageFeature> &feature
     }
 }
 
+// Read feature CSV into memory.
 vector<ImageFeature> readFeatureCSV(const string &filename, FeatureType type) {
     vector<ImageFeature> db;
     ifstream file(filename);
@@ -220,6 +239,7 @@ vector<ImageFeature> readFeatureCSV(const string &filename, FeatureType type) {
     return db;
 }
 
+// Read CSV produced by a DNN embedding extractor.
 vector<ImageFeature> readDNNCSV(const string &filename) {
     vector<ImageFeature> db;
     ifstream file(filename);

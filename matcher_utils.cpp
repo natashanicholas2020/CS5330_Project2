@@ -1,9 +1,18 @@
+//Name: Natasha Nicholas
+//Date: Feb. 11, 2026
+//File: matcher_utils.cpp
+//
+// Provides distance functions (SSD, histogram intersection, cosine distance)
+// and a function to match a target image feature against a database of
+// features, returning the top-N closest matches.
+
 #include "matcher_utils.h"
 #include <algorithm>
 #include <cmath>
 
 using namespace std;
 
+// Compute Sum of Squared Differences between two int vectors.
 double computeSSD(const vector<int> &a, const vector<int> &b) {
     double ssd = 0.0;
     for (int i = 0; i < a.size(); i++) {
@@ -13,6 +22,7 @@ double computeSSD(const vector<int> &a, const vector<int> &b) {
     return ssd;
 }
 
+// Compute histogram intersection distance.
 double histIntersection(const vector<double> &a, const vector<double> &b) {
     double sum = 0;
     for (int i = 0; i < a.size(); i++) {
@@ -21,6 +31,7 @@ double histIntersection(const vector<double> &a, const vector<double> &b) {
     return 1.0 - sum;
 }
 
+// Compute cosine distance between two vectors.
 double cosineDistance(const vector<double> &a, const vector<double> &b) {
     double dot = 0, na = 0, nb = 0;
     for (int i = 0; i < a.size(); i++) {
@@ -34,6 +45,7 @@ double cosineDistance(const vector<double> &a, const vector<double> &b) {
     return 1.0 - dot / (na * nb);
 }
 
+// Match a target feature against a database.
 vector<Match> matchFeatures(const ImageFeature &target,
                            const vector<ImageFeature> &db,
                            FeatureType type,

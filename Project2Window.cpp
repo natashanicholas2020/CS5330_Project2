@@ -1,3 +1,9 @@
+//Name: Natasha Nicholas
+//Date: Feb. 11, 2026
+//File: Project2Window.cpp
+//
+// Implements the main GUI window for Project 2 using Qt.
+
 #include "Project2Window.h"
 #include <QVBoxLayout>
 #include <QFileDialog>
@@ -54,6 +60,7 @@ Project2Window::Project2Window(QWidget *parent) : QMainWindow(parent) {
     connect(btnMatch, &QPushButton::clicked, this, &Project2Window::onRunMatch);
 }
 
+//open file dialog to choose image directory
 void Project2Window::onLoadImages() {
     QString dir = QFileDialog::getExistingDirectory(this, "Choose Image Directory");
     if (!dir.isEmpty()) {
@@ -62,6 +69,7 @@ void Project2Window::onLoadImages() {
     }
 }
 
+// extract features for all images in the chosen directory
 void Project2Window::onExtractFeatures() {
 
     if (imageDir.empty() ) {
@@ -87,6 +95,7 @@ void Project2Window::onExtractFeatures() {
     QMessageBox::information(this, "Done", "Features extracted!");
 }
 
+//run matching against database CSV
 void Project2Window::onRunMatch() {
     std::string target = editTarget->text().trimmed().toStdString();
     std::string csv = editCSVMatch->text().trimmed().toStdString();

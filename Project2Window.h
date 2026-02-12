@@ -1,3 +1,9 @@
+//Name: Natasha Nicholas
+//Date: Feb. 11, 2026
+//File: Project2Window.h
+//
+// Header file for Project2Window.cpp
+
 #pragma once
 #include <QMainWindow>
 #include <QLabel>
