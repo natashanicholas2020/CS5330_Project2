@@ -1,0 +1,5 @@
+/Users/natashanicholas/tash-git/CS5330_Project2/build/CMakeFiles/Project2App.dir
+/Users/natashanicholas/tash-git/CS5330_Project2/build/CMakeFiles/edit_cache.dir
+/Users/natashanicholas/tash-git/CS5330_Project2/build/CMakeFiles/rebuild_cache.dir
+/Users/natashanicholas/tash-git/CS5330_Project2/build/CMakeFiles/Project2App_autogen_timestamp_deps.dir
+/Users/natashanicholas/tash-git/CS5330_Project2/build/CMakeFiles/Project2App_autogen.dir

@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_Project2App_FILE /Users/natashanicholas/tash-git/CS5330_Project2/build/Project2App)
+set(__QT_DEPLOY_TARGET_Project2App_TYPE EXECUTABLE)
